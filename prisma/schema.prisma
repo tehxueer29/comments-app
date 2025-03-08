@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  name      String
+  imageUrl  String
+  deletedAt DateTime?
+
+  comments Comment[]
+  posts    Post[]
+}
+
+model Post {
+  id        String    @id @default(uuid())
+  title     String
+  body      String
+  deletedAt DateTime?
+
+  comments Comment[]
+
+  userID String
+  user   User   @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Comment {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  body      String
+  likes     Int       @default(0)
+  deletedAt DateTime?
+
+  parentID String?
+  parent   Comment?  @relation("CommentReplies", fields: [parentID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies  Comment[] @relation("CommentReplies")
+
+  userID String
+  user   User   @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  postID String
+  post   Post   @relation(fields: [postID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}

@@ -1,74 +1,15 @@
-import Comment from "@/components/comment/Comment";
+import Comments from "@/components/comment/Comments";
 import PostComment from "@/components/PostComment";
-import { CommentType } from "@/types/types";
+import { getAllPosts } from "@/lib/axiosFetcher";
 
-export default function Home() {
-  const comments: CommentType[] = [
-    {
-      id: 1,
-      username: "amyrobson",
-      profilePicture: "@/public/images/avatars/image-amyrobson.png",
-      date: "1 month ago",
-      message: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita voluptas iure doloribus eos nemo quia perferendis, animi quod, illo esse fugit! Ea veritatis minima quasi optio quam, enim aliquid repellat?`,
-      likes: 12,
-    },
-    {
-      id: 2,
-      username: "test2 owner",
-      profilePicture: "@/public/images/avatars/image-amyrobson.png",
-      date: "1 month ago",
-      message: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita voluptas iure doloribus eos nemo quia perferendis, animi quod, illo esse fugit! Ea veritatis minima quasi optio quam, enim aliquid repellat?`,
-      likes: 12,
-      replies: [
-        {
-          id: 3,
-          username: "test3",
-          profilePicture: "@/public/images/avatars/image-amyrobson.png",
-          date: "1 month ago",
-          message: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita voluptas iure doloribus eos nemo quia perferendis, animi quod, illo esse fugit! Ea veritatis minima quasi optio quam, enim aliquid repellat?`,
-          likes: 12,
-          replies: [
-            {
-              id: 5,
-              username: "5",
-              profilePicture: "@/public/images/avatars/image-amyrobson.png",
-              date: "1 month ago",
-              message: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita voluptas iure doloribus eos nemo quia perferendis, animi quod, illo esse fugit! Ea veritatis minima quasi optio quam, enim aliquid repellat?`,
-              likes: 12,
-            },
-            {
-              id: 6,
-              username: "6",
-              profilePicture: "@/public/images/avatars/image-amyrobson.png",
-              date: "1 month ago",
-              message: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita voluptas iure doloribus eos nemo quia perferendis, animi quod, illo esse fugit! Ea veritatis minima quasi optio quam, enim aliquid repellat?`,
-              likes: 12,
-            },
-          ],
-        },
-        {
-          id: 4,
-          username: "4",
-          profilePicture: "@/public/images/avatars/image-amyrobson.png",
-          date: "1 month ago",
-          message: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita voluptas iure doloribus eos nemo quia perferendis, animi quod, illo esse fugit! Ea veritatis minima quasi optio quam, enim aliquid repellat?`,
-          likes: 12,
-        },
-      ],
-    },
-    {
-      id: 7,
-      username: "7",
-      profilePicture: "@/public/images/avatars/image-amyrobson.png",
-      date: "1 month ago",
-      message: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita voluptas iure doloribus eos nemo quia perferendis, animi quod, illo esse fugit! Ea veritatis minima quasi optio quam, enim aliquid repellat?`,
-      likes: 12,
-    },
-  ];
+export default async function Home() {
+  const postsReq = await getAllPosts();
+  const posts = postsReq.data.data;
+
   return (
-    <div className="px-4 py-8 gap-y-4 flex flex-col">
-      <Comment comments={comments} />
-      <PostComment isReply={false} />
+    <div className="px-4 py-8 gap-y-4 flex flex-col lg:py-16 lg:px-48 xl:px-80">
+      <Comments  postID={posts[0].id}/>
+      <PostComment isReply={false} postID={posts[0].id} />
     </div>
   );
 }

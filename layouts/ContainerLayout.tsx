@@ -1,12 +1,12 @@
-interface CommentLayoutProps {
+interface ContainerLayoutProps {
   children: React.ReactNode;
   className?: string;
 }
 
-export default function CommentLayout({
+export default function ContainerLayout({
   children,
   className,
-}: CommentLayoutProps) {
+}: ContainerLayoutProps) {
   return (
     <div className={`bg-white rounded-lg p-4 ${className || ""}`}>
       {children}

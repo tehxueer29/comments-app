@@ -1,23 +1,24 @@
 "use client";
 
-import { CommentType } from "@/types/types";
 import { useState } from "react";
+import { CommentTypeWithReplies } from "@/types";
 
 import BaseComment from "./BaseComment";
 
 interface CommentProps {
-  comments: CommentType[];
+  comments: CommentTypeWithReplies[];
 }
 
 type HideReplies = {
-  [key: number]: boolean;
+  [key: string]: boolean;
 };
 
 export default function Comment({ comments }: CommentProps) {
+  
   const [hideReplies, setHideReplies] = useState<HideReplies>({});
 
   const handleToggleReplies = (
-    commentId: number,
+    commentId: string,
     e?: React.MouseEvent<HTMLDivElement>
   ) => {
     e && e.stopPropagation();
@@ -27,22 +28,24 @@ export default function Comment({ comments }: CommentProps) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 xl:space-y-5">
       {comments.map((comment) => (
-        <div key={comment.id} className="space-y-4">
+        <div key={comment.id} className="space-y-4 xl:space-y-5">
           <BaseComment
             {...comment}
+            name={comment.user.name}
+            imageUrl={comment.user.imageUrl}
             hideReplies={hideReplies[comment.id] || false}
             triggerShowReplies={handleToggleReplies}
           />
-          {comment.replies && (
+          {comment.replies.length > 0 && (
             <div className={`flex ${hideReplies[comment.id] ? "hidden" : ""}`}>
               <div
                 className="cursor-pointer group"
                 onClick={(e) => handleToggleReplies(comment.id, e)}
               >
                 <div
-                  className={`me-4 w-0.5 mb-4 bg-gray-800 opacity-10 group-hover:opacity-30 duration-150 h-full`}
+                  className={`me-4 w-0.5 mb-4 bg-gray-800 opacity-10 group-hover:opacity-30 duration-150 h-full xl:mx-11`}
                 />
               </div>
               <div className="w-full">
